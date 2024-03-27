@@ -1,0 +1,6 @@
+@Gerenciador_de_Tarefas_HostAddress = http://localhost:5034
+
+GET {{Gerenciador_de_Tarefas_HostAddress}}/users/
+Accept: application/json
+
+###

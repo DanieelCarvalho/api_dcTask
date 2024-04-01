@@ -1,11 +1,17 @@
-﻿namespace Gerenciador_de_Tarefas.Domain.Models;
+﻿using System.ComponentModel.DataAnnotations;
 
-public class User
+namespace Gerenciador_de_Tarefas.Domain.Models;
+
+public class User : Entity
 {
+   
 
-    public int Id { get; set; }
+    [Required]
     public string? UserName { get; set; }
 
     public string? Password { get; set; }
     public string? Email { get; set; }
+
+   // public int? EnderecoId { get; set; }
+   // public virtual Endereco Endereco { get; set; }
 }

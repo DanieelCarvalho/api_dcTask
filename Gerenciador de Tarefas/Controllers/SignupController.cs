@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Gerenciador_de_Tarefas.Domain.Context;
 using Gerenciador_de_Tarefas.Domain.Dtos;
 using Gerenciador_de_Tarefas.Domain.Models;
+using Gerenciador_de_Tarefas.Infra.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gerenciador_de_Tarefas.Controllers;
@@ -10,18 +12,24 @@ public class SignupController : ControllerBase
 
 {
     private readonly IMapper _mapper;
+    private readonly IUserRepository _userRepository;
 
-    public SignupController(IMapper mapper)
+    public SignupController(IMapper mapper, AppDbContext appDbContext, IUserRepository userRepository)
     {
         _mapper = mapper;
+        _userRepository = userRepository;
     }
 
     [HttpPost]
-    public IActionResult CreateAccount(UserRequestDto bodyData)
+    public async Task<IActionResult> CreateAccount(UserRequestDto bodyData)
     {
+        var alunoParaCadastrar = _mapper.Map<User>(bodyData);
+        await _userRepository.Add(alunoParaCadastrar);
 
-        User newUser = _mapper.Map<User>(bodyData);
-        return Ok();
-    }
+       // await _appDbContext.users.AddAsync(alunoParaCadastrar);
+       // await _appDbContext.SaveChangesAsync();
+       //status 201 + corpo vazio + header com redirecionamento 
+        return CreatedAtAction(nameof(CreateAccount), new {});
+    }   
 
 }

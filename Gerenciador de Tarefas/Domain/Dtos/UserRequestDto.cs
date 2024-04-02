@@ -10,9 +10,14 @@ public class UserRequestDto
     public string? Email { get; set; }
 
     [Required]
-    public string? UserNAme { get; set; }
+    public string? UserName { get; set; }
 
-    [MinLength(8)]
+    
     [Required]
+    [DataType(DataType.Password)]
     public string? Password {  get; set; }
+
+    [Required]
+    [Compare("Password")]
+    public string? PasswordConfirmation { get; set;}
 }

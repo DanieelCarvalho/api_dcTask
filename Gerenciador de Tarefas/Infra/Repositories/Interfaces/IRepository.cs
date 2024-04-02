@@ -8,7 +8,7 @@ public interface IRepository<T>
 
     Task Add(T entity);
 
-    Task<T> Update(int Id, T NewEntity);
+    Task Update( T Entity);
 
     Task<bool> Delete(int Id);
 }

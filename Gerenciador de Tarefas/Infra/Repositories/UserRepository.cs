@@ -11,8 +11,12 @@ public class UserRepository : BaseRepository<User>, IUserRepository
     {
     }
 
-    public async Task<User> GetByEmail(string email)
-    {
-        return await _appDbContext.users.FirstOrDefaultAsync(user => user.Email.Equals(email));
-    }
+ 
+
+
+
+    // public async Task<User> GetByEmail(string email)
+    //{
+    // return await _appDbContext.users.FirstOrDefaultAsync(user => user.Email.Equals(email));
+    //}
 }

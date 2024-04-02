@@ -1,12 +1,12 @@
 ﻿using Gerenciador_de_Tarefas.Domain.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Gerenciador_de_Tarefas.Domain.Context;
 
-public class AppDbContext : DbContext
+public class AppDbContext : IdentityDbContext<User>
 {
-    public DbSet<User> users { get; set; }
-
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {

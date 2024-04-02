@@ -1,6 +1,41 @@
 @Gerenciador_de_Tarefas_HostAddress = http://localhost:5034
 
-GET {{Gerenciador_de_Tarefas_HostAddress}}/users/
+GET {{Gerenciador_de_Tarefas_HostAddress}}/user/
 Accept: application/json
+
+
+
+
+###
+POST {{Gerenciador_de_Tarefas_HostAddress}}/user/register
+Content-Type: : application/json
+
+{
+    
+   "email": "user@example.com",
+  "userName": "string",
+  "password": "string",
+  "passwordConfirmation": "string"
+
+}
+###
+
+
+
+POST {{Gerenciador_de_Tarefas_HostAddress}}/user/login HTTP/1.1
+content-Type:  application/json
+Accept: aplication/json
+
+{
+  "userName": "daniel",
+  "password": "02362228Im*"
+}
+
+
+###
+
+GET {{Gerenciador_de_Tarefas_HostAddress}}/dados/daniel
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkRhbmllbCIsImlkIjoiNjMyNGFiZGEtZjNkMS00MWQ1LWE2ZjQtM2U0YzQ5NjRlMTEwIiwibG9naW5UaW1lU3RhbXAiOiIwNC8wMi8yMDI0IDIwOjE4OjE5IiwiZXhwIjoxNzEyMDg5MTU5fQ.8joBB04yVtR6ppe7Hl6H-8ADGIFlv0j3O5vMNoo9HH0
 
 ###

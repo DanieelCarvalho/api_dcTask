@@ -1,10 +1,12 @@
 ﻿using Gerenciador_de_Tarefas.Domain.Context;
 using Gerenciador_de_Tarefas.Domain.Models;
 using Gerenciador_de_Tarefas.Infra.Repositories.Interfaces;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 
 namespace Gerenciador_de_Tarefas.Infra.Repositories
 {
-    public abstract class BaseRepository<T> : IRepository<T> where T : Entity
+    public abstract class BaseRepository<T> : IRepository<T> 
     {
         protected readonly AppDbContext _appDbContext;
 
@@ -14,28 +16,36 @@ namespace Gerenciador_de_Tarefas.Infra.Repositories
         }
         public async Task Add(T entity)
         {
-            await _appDbContext.Set<T>().AddAsync(entity);
+           // await _appDbContext.Set<T>().AddAsync(entity);
+           // await _appDbContext.SaveChangesAsync();
+        }
+
+        public async Task<bool> Delete(int Id)
+        {
+            var entity = await GetById(Id);
+          //  _appDbContext.Set<T>().Remove(entity);
             await _appDbContext.SaveChangesAsync();
+           return true;
         }
 
-        public Task<bool> Delete(int Id)
+        public async Task<IEnumerable<T>> GetAll()
         {
+            //  return await _appDbContext.Set<T>().ToListAsync();
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<T>> GetAll()
+        public async Task<T> GetById(int Id)
         {
+            //  return await _appDbContext.Set<T>().FindAsync(Id);
             throw new NotImplementedException();
         }
 
-        public Task<T> GetById(int Id)
+        public async Task Update( T Entity)
         {
-            throw new NotImplementedException();
+            // _appDbContext.Set<T>().Update( Entity);
+             await _appDbContext.SaveChangesAsync();
         }
 
-        public Task<T> Update(int Id, T NewEntity)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

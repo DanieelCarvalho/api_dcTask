@@ -1,8 +1,13 @@
 
+using Gerenciador_de_Tarefas.Configuration;
 using Gerenciador_de_Tarefas.Domain.Context;
-using Gerenciador_de_Tarefas.Infra.Repositories;
-using Gerenciador_de_Tarefas.Infra.Repositories.Interfaces;
+using Gerenciador_de_Tarefas.Domain.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Gerenciador_de_Tarefas
 {
@@ -19,9 +24,40 @@ namespace Gerenciador_de_Tarefas
             var defaultConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseSqlite(defaultConnectionString);
+                options.UseLazyLoadingProxies().UseSqlite(defaultConnectionString);
             });
-            builder.Services.AddScoped<IUserRepository ,UserRepository>();
+           
+
+            builder.Services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
+
+            builder.Services.AddAuthentication(opitions =>
+            {
+                opitions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("jhdoasjhduhsbacyyypo211154765#*hab")),
+                    ClockSkew = TimeSpan.Zero,
+                    ValidateAudience = false,
+                    ValidateLifetime = false
+,                };
+            });
+
+            builder.Services.AddAuthorization(auth =>
+            {
+                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                    .RequireAuthenticatedUser()
+                    .Build());
+            });
+
+            builder.Services.AddServicesLayer();
+
+
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -38,6 +74,11 @@ namespace Gerenciador_de_Tarefas
             }
 
             app.UseHttpsRedirection();
+
+
+            
+            app.UseAuthentication();
+            
 
             app.UseAuthorization();
 

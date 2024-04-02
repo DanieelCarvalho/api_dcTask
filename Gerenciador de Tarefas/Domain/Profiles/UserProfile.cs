@@ -9,6 +9,7 @@ public class UserProfile :Profile
     public UserProfile()
     {
         CreateMap<UserRequestDto, User>();
+        CreateMap<User, UserProfileDto>();
     }
 
 }

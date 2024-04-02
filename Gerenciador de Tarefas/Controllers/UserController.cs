@@ -1,42 +1,38 @@
 ﻿using AutoMapper;
+using Gerenciador_de_Tarefas.Domain.Context;
 using Gerenciador_de_Tarefas.Domain.Dtos;
 using Gerenciador_de_Tarefas.Domain.Models;
 using Gerenciador_de_Tarefas.Infra.Repositories.Interfaces;
-using Gerenciador_de_Tarefas.Services;
+using Gerenciador_de_Tarefas.Infra.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection.Metadata.Ecma335;
 
 namespace Gerenciador_de_Tarefas.Controllers;
 [ApiController]
-[Route("users")]
+[Route("/user")]
 public class UserController : ControllerBase
 
 {
-    private readonly IUserRepository _userRepository;
-    private readonly IMapper _mapper;
+    private readonly UserService _userService;
 
-    public UserController(IUserRepository userRepository, IMapper mapper)
+    public UserController(UserService userService)
     {
-        _userRepository = userRepository;
-        _mapper = mapper;
+        _userService = userService;
     }
 
-    [HttpGet]
-    public IActionResult GetHello()
+    [HttpPost("resgister")]
+    public async Task<IActionResult> CreateAccount(UserRequestDto bodyData)
     {
-        return Ok("Hello World!");
+        await _userService.CreateAccount(bodyData);
+        return Created();
     }
 
-    [HttpPost]
-    [Route("login")]
-    public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+
+    [HttpPost("login")]
+    [ProducesResponseType(type: typeof(UserTokenResponseDto), statusCode: StatusCodes.Status200OK)]
+    public async Task<IActionResult> login(LoginDto loginDto)
     {
-        User user = await _userRepository.GetByEmail(loginDto.Email);
-
-        bool doesPasswordMatch = PasswordVerificationService.CheckPassword(user.Password, loginDto.Password);
-        if (!doesPasswordMatch) return StatusCode(403);
-        return Ok();
+       var rokenResponse= await _userService.Login(loginDto);
+        return Ok(rokenResponse);
     }
-
 }
-

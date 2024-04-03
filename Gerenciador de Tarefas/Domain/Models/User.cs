@@ -5,14 +5,7 @@ namespace Gerenciador_de_Tarefas.Domain.Models;
 
 public class User : IdentityUser
 {
-   
 
-   // [Required]
-   //  public string? UserName { get; set; }
+    public virtual ICollection<Tasks> Tasks { get; set; }
 
-   // public string? Password { get; set; }
-   // public string? Email { get; set; }
-
-   // public int? EnderecoId { get; set; }
-   // public virtual Endereco Endereco { get; set; }
 }

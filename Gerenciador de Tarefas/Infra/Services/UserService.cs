@@ -49,7 +49,8 @@ public class UserService
         var user = await _userManager.Users.FirstAsync(user => user.NormalizedUserName!.Equals(loginDto.UserName.ToUpper()));
         return new UserTokenResponseDto()
         {
-            Token = _tokenService.GenerateToken(user)
+            Token = _tokenService.GenerateToken(user),
+            Username = user.UserName
         };
     }
 }

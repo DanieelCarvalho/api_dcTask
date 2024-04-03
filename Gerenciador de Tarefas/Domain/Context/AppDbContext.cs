@@ -7,7 +7,7 @@ namespace Gerenciador_de_Tarefas.Domain.Context;
 
 public class AppDbContext : IdentityDbContext<User>
 {
-
+    public DbSet<Tasks> Tasks { get; set; }
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }

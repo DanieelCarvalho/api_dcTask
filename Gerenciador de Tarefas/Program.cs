@@ -32,20 +32,31 @@ namespace Gerenciador_de_Tarefas
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
-            builder.Services.AddAuthentication(opitions =>
-            {
-                opitions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
-            {
+            builder.Services.AddAuthentication(options => {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options => {
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("jhdoasjhduhsbacyyypo211154765#*hab")),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("efd1290u12u2109u2hno120j01m12hef")),
                     ClockSkew = TimeSpan.Zero,
                     ValidateAudience = false,
-                    ValidateLifetime = false
-,                };
+                    ValidateIssuer = false
+                };
             });
+
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:4200")
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                    });
+            });
+
 
             builder.Services.AddAuthorization(auth =>
             {
@@ -60,7 +71,10 @@ namespace Gerenciador_de_Tarefas
 
 
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+
+            builder.Services.AddInfrastructureSwagger();
+
+            //builder.Services.AddSwaggerGen();
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -75,11 +89,9 @@ namespace Gerenciador_de_Tarefas
 
             app.UseHttpsRedirection();
 
+            app.UseCors("AllowSpecificOrigin");
 
-            
             app.UseAuthentication();
-            
-
             app.UseAuthorization();
 
 

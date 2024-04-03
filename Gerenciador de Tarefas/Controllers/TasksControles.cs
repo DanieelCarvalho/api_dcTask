@@ -9,7 +9,7 @@ public class DadosControles : ControllerBase
 {
 
     [HttpGet("{userName}")]
-    public async Task<IActionResult> GetDados(string username)
+    public async Task<IActionResult> GetDados(string userName)
     {
         return Ok("Consegui acessar os dados"); 
     }

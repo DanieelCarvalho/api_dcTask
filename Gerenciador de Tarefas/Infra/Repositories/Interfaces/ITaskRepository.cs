@@ -2,8 +2,8 @@
 
 namespace Gerenciador_de_Tarefas.Infra.Repositories.Interfaces;
 
-public interface IUserRepository : IRepository<User>
+public interface ITaskRepository :  IRepository<Tasks>
 {
-    //public Task<T> GetByEmail(string email);
+
 
 }

@@ -15,7 +15,7 @@ public static class DependecyInjectionConfig
     }
     public static IServiceCollection AddServicesLayer(this IServiceCollection services )
     {
-        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<ITaskRepository, TaskRepository>();
         services.AddScoped<UserService>();
         services.AddScoped<TokenService>();
         return services;

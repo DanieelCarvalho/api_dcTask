@@ -10,6 +10,8 @@ public class UserProfile :Profile
     {
         CreateMap<UserRequestDto, User>();
         CreateMap<User, UserProfileDto>();
+        CreateMap<UserRequestDto, Tasks>();
+
     }
 
 }

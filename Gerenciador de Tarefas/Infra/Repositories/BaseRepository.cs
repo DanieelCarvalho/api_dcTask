@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Gerenciador_de_Tarefas.Infra.Repositories
 {
-    public abstract class BaseRepository<T> : IRepository<T> 
+    public abstract class BaseRepository<T> : IRepository<T> where T : Entity
     {
         protected readonly AppDbContext _appDbContext;
 
@@ -16,14 +16,14 @@ namespace Gerenciador_de_Tarefas.Infra.Repositories
         }
         public async Task Add(T entity)
         {
-           // await _appDbContext.Set<T>().AddAsync(entity);
-           // await _appDbContext.SaveChangesAsync();
+            await _appDbContext.Set<T>().AddAsync(entity);
+            await _appDbContext.SaveChangesAsync();
         }
 
         public async Task<bool> Delete(int Id)
         {
             var entity = await GetById(Id);
-          //  _appDbContext.Set<T>().Remove(entity);
+            _appDbContext.Set<T>().Remove(entity);
             await _appDbContext.SaveChangesAsync();
            return true;
         }

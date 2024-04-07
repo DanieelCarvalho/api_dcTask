@@ -22,6 +22,8 @@ public class TokenService
         Claim[] claims = new Claim[] {
         new("username", user.UserName),
         new("id", user.Id),
+        new (ClaimTypes.NameIdentifier, user.Id),
+        new (ClaimTypes.Name, user.UserName),
         new("loginTimeStamp", DateTime.UtcNow.ToString()),
       };
 
@@ -30,7 +32,7 @@ public class TokenService
         var loginCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-          expires: DateTime.Now.AddMinutes(1),
+          expires: DateTime.Now.AddMinutes(8),
           signingCredentials: loginCredentials,
           claims: claims
         );

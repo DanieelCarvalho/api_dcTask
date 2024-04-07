@@ -12,15 +12,15 @@ namespace Gerenciador_de_Tarefas.Infra.Services;
 public class UserService
 {
     private readonly IMapper _mapper;
-    private readonly IUserRepository _userRepository;
+   
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;
     private readonly TokenService _tokenService;
 
-    public UserService(IMapper mapper, AppDbContext appDbContext, IUserRepository userRepository, UserManager<User> userManager, SignInManager<User> signInManager, TokenService tokenService)
+    public UserService(IMapper mapper, AppDbContext appDbContext, UserManager<User> userManager, SignInManager<User> signInManager, TokenService tokenService)
     {
         _mapper = mapper;
-        _userRepository = userRepository;
+      
         _userManager = userManager;
         _signInManager = signInManager;
         _tokenService = tokenService;
@@ -29,13 +29,24 @@ public class UserService
     public async Task CreateAccount(UserRequestDto bodyData)
     {
         var user = _mapper.Map<User>(bodyData);
-        var result = await _userManager.CreateAsync(user, bodyData.Password);
-        if (!result.Succeeded)
+
+        try
         {
-            throw new Exception("Falha ao cadastrar usuario");
+            var result = await _userManager.CreateAsync(user, bodyData.Password);
+
+            if (!result.Succeeded)
+            {
+                var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                throw new Exception($"Falha ao cadastrar usuario: {errors}");
+            }
         }
-
-
+        catch (Exception ex)
+        {
+            // Aqui você pode registrar ou manipular a exceção conforme necessário
+            // Por exemplo, você pode querer logar a exceção para fins de depuração
+            Console.WriteLine($"Erro ao criar usuário: {ex.Message}");
+            throw; // Lançar novamente a exceção para que ela seja tratada em um nível superior
+        }
     }
 
     public async Task<UserTokenResponseDto> Login(LoginDto loginDto)

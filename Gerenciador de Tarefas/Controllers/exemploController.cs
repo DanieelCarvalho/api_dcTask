@@ -9,30 +9,30 @@ namespace Gerenciador_de_Tarefas.Controllers;
 public class exemploController : ControllerBase
 
 {
-    private readonly IUserRepository _userRepository;
+    
     private readonly IMapper _mapper;
 
-    public exemploController(IUserRepository userRepository, IMapper mapper)
+    public exemploController( IMapper mapper)
     {
-        _userRepository = userRepository;
+        
         _mapper = mapper;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var users = await _userRepository.GetAll();
+       // var users = await _userRepository.GetAll();
 
-        return Ok(users);
+        return Ok();
     }
     [HttpGet]
     [Route("{id}")]
     public async Task<IActionResult> GetAccountData(int id)
     {
-        var user = await _userRepository.GetById(id);
-        var userProfile = _mapper.Map<UserProfileDto>(user);
+      //  var user = await _userRepository.GetById(id);
+        //var userProfile = _mapper.Map<UserProfileDto>(user);
 
-        return Ok(userProfile);
+        return Ok();
     }
 
     [HttpPost]

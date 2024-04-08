@@ -11,7 +11,7 @@ public class Tasks : Entity
     public DateTime DataFim { get; set; }
 
     public bool EstarDeletado { get; set; } = false;
-    public string Status { get; set; }
+    public string Status { get; set; } = "Em andamento";
 
     public string  Descricao { get; set; }
 

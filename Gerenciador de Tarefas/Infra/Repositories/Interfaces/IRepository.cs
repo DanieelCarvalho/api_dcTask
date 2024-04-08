@@ -1,10 +1,12 @@
-﻿namespace Gerenciador_de_Tarefas.Infra.Repositories.Interfaces;
+﻿using Gerenciador_de_Tarefas.Domain.Models;
+
+namespace Gerenciador_de_Tarefas.Infra.Repositories.Interfaces;
 
 public interface IRepository<T>
 {
     Task<IEnumerable<T>> GetAll();
 
-    Task<T> GetById(int Id);
+    Task<IEnumerable<Tasks>> GetByUserId(string userId);
 
     Task Add(T entity);
 

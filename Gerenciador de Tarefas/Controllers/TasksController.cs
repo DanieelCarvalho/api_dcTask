@@ -1,39 +1,36 @@
 ﻿using AutoMapper;
+using Gerenciador_de_Tarefas.Domain.Context;
 using Gerenciador_de_Tarefas.Domain.Dtos;
 using Gerenciador_de_Tarefas.Domain.Models;
 using Gerenciador_de_Tarefas.Infra.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Gerenciador_de_Tarefas.Controllers;
 [ApiController]
-[Route("dados")]
+[Route("/tasks")]
 [Authorize(AuthenticationSchemes = "Bearer")]
-public class TasksControles : ControllerBase
+public class TasksController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly UserManager<User> _userManager;
     private readonly ITaskRepository _taskRepository;
-   
+    private readonly AppDbContext _appDbContext;
 
-    public TasksControles(UserManager<User> userManager,IMapper mapper, ITaskRepository taskRepository)
+    public TasksController(UserManager<User> userManager,IMapper mapper, ITaskRepository taskRepository, AppDbContext appDbContext)
     {
         _userManager = userManager;
         _mapper = mapper;
         _taskRepository = taskRepository;
-    }
-
-    [HttpGet("{userName}")]
-    public async Task<IActionResult> GetDados(string userName)
-    {
-        return Ok("Consegui acessar os dados"); 
+        _appDbContext = appDbContext;
     }
 
 
-    [HttpPost]
 
-    [HttpPost]
+    [HttpPost("create")]
+    
     public async Task<IActionResult> CreateTask(TaskDto taskDto)
     {
      
@@ -63,5 +60,42 @@ public class TasksControles : ControllerBase
             return StatusCode(500, $"Erro ao criar tarefa: {ex.Message}");
         }
     }
+    [HttpGet("getTask")]
 
+    public async Task<IActionResult> GetAll()
+    {
+       var userID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+
+        if (userID == null)
+        {
+            return NotFound("Usuário não encontrado.");
+        }
+
+        var tasks = await _taskRepository.GetByUserId(userID);
+
+        if (tasks == null) return NotFound(new
+        {
+            Moment = DateTime.Now,
+            Message = $"Cannot find user with user= {userID}"
+        });
+        var teste = _mapper.Map<List<TaskDto>>(tasks);
+
+        return Ok(teste);
+    }
+    [HttpDelete]
+
+    public async Task<bool> DeleteTaskId(int id)
+    {
+        var task = await _appDbContext.Tasks.FindAsync(id);
+        if (task == null)
+        {
+            return false; 
+        }
+
+        task.EstarDeletado = true;
+        await _appDbContext.SaveChangesAsync();
+
+        return true;
+    }
 }

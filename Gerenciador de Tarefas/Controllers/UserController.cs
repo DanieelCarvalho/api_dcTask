@@ -1,10 +1,5 @@
-﻿using AutoMapper;
-using Gerenciador_de_Tarefas.Domain.Context;
-using Gerenciador_de_Tarefas.Domain.Dtos;
-using Gerenciador_de_Tarefas.Domain.Models;
-using Gerenciador_de_Tarefas.Infra.Repositories.Interfaces;
+﻿using Gerenciador_de_Tarefas.Domain.Dtos;
 using Gerenciador_de_Tarefas.Infra.Services;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gerenciador_de_Tarefas.Controllers;

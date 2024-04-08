@@ -22,22 +22,21 @@ namespace Gerenciador_de_Tarefas.Infra.Repositories
 
         public async Task<bool> Delete(int Id)
         {
-            var entity = await GetById(Id);
-            _appDbContext.Set<T>().Remove(entity);
+          //  var entity = await GetById(Id);
+          //  _appDbContext.Set<T>().Remove(entity);
             await _appDbContext.SaveChangesAsync();
            return true;
         }
 
         public async Task<IEnumerable<T>> GetAll()
         {
-            //  return await _appDbContext.Set<T>().ToListAsync();
+              return await _appDbContext.Set<T>().ToListAsync();
             throw new NotImplementedException();
         }
 
-        public async Task<T> GetById(int Id)
+        public async Task<IEnumerable<Tasks>> GetByUserId(string userId)
         {
-            //  return await _appDbContext.Set<T>().FindAsync(Id);
-            throw new NotImplementedException();
+            return await _appDbContext.Tasks.Where(t => t.UserId == userId).ToListAsync();
         }
 
         public async Task Update( T Entity)

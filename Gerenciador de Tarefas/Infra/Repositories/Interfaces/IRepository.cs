@@ -8,9 +8,14 @@ public interface IRepository<T>
 
     Task<IEnumerable<Tasks>> GetByUserId(string userId);
 
+
+    Task<Tasks> GetById(int id); 
     Task Add(T entity);
 
     Task Update( T Entity);
 
     Task<bool> Delete(int Id);
+
+    Task<IEnumerable<T>> GetStatus();
+    Task UpdateStatus(IEnumerable<Tasks> task);
 }

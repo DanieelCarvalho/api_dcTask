@@ -22,16 +22,29 @@ namespace Gerenciador_de_Tarefas.Infra.Repositories
 
         public async Task<bool> Delete(int Id)
         {
-          //  var entity = await GetById(Id);
-          //  _appDbContext.Set<T>().Remove(entity);
+            var task = await _appDbContext.Tasks.FindAsync(Id);
+            if (task == null)
+            {
+                return false;
+            }
+
+            task.EstarDeletado = true;
             await _appDbContext.SaveChangesAsync();
-           return true;
+
+            return true;
         }
+        public async Task Update(T Entity)
+        {
+          
+            _appDbContext.Set<T>().Update(Entity);
+            await _appDbContext.SaveChangesAsync();
+        }
+
 
         public async Task<IEnumerable<T>> GetAll()
         {
-              return await _appDbContext.Set<T>().ToListAsync();
-            throw new NotImplementedException();
+            return await _appDbContext.Set<T>().ToListAsync();
+
         }
 
         public async Task<IEnumerable<Tasks>> GetByUserId(string userId)
@@ -39,12 +52,23 @@ namespace Gerenciador_de_Tarefas.Infra.Repositories
             return await _appDbContext.Tasks.Where(t => t.UserId == userId).ToListAsync();
         }
 
-        public async Task Update( T Entity)
+        public async Task<IEnumerable<T>> GetStatus()
         {
-            // _appDbContext.Set<T>().Update( Entity);
-             await _appDbContext.SaveChangesAsync();
+            return await _appDbContext.Set<T>().ToListAsync();
         }
 
+      
+        public async Task UpdateStatus(IEnumerable<Tasks> task)
+        {
+            await _appDbContext.SaveChangesAsync();
+        }
+
+        public async Task<Tasks> GetById(int id)
+        {
+            return await _appDbContext.Tasks.FindAsync(id);
+        }
+
+     
        
     }
 }

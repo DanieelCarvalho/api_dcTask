@@ -10,6 +10,7 @@ public class TaskProfile : Profile
     {
     CreateMap<TaskDto, Tasks>();
         CreateMap< Tasks, TaskDto>();
+        CreateMap<Tasks, GetTasksDto>();
 
     }
 

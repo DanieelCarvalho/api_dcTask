@@ -2,8 +2,7 @@
 
 namespace Gerenciador_de_Tarefas.Infra.Repositories.Interfaces;
 
-public interface ITaskRepository :  IRepository<Tasks>
+public interface ITaskRepository : IRepository<Tasks>
 {
-
-
+    
 }

@@ -28,7 +28,10 @@ namespace Gerenciador_de_Tarefas
             });
            
 
-            builder.Services.AddIdentity<User, IdentityRole>()
+            builder.Services.AddIdentity<User, IdentityRole>(opitions =>
+            {
+                opitions.User.RequireUniqueEmail = true;
+            })
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 

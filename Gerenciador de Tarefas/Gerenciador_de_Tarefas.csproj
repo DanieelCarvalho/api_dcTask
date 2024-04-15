@@ -5,9 +5,9 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <InvariantGlobalization>true</InvariantGlobalization>
-	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
-	  <NoWarn>$(noWarn);1591</NoWarn>
     <RootNamespace>Gerenciador_de_Tarefas</RootNamespace>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DocumentationFile>GerenciadorTarefas.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

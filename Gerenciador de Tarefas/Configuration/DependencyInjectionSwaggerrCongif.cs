@@ -1,4 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 namespace Gerenciador_de_Tarefas.Configuration;
 
@@ -31,6 +32,9 @@ public static class DependencyInjectionSwaggerrCongif
                 new string[] {}
                 }
             });
+            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            c.IncludeXmlComments(xmlPath);
 
         });
         return services;

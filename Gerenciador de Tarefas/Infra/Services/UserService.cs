@@ -3,7 +3,9 @@ using Gerenciador_de_Tarefas.Domain.Context;
 using Gerenciador_de_Tarefas.Domain.Dtos;
 using Gerenciador_de_Tarefas.Domain.Models;
 using Gerenciador_de_Tarefas.Infra.Repositories.Interfaces;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -26,27 +28,33 @@ public class UserService
         _tokenService = tokenService;
     }
 
-    public async Task CreateAccount(UserRequestDto bodyData)
+    public async Task<successCreatDto> CreateAccount(UserRequestDto bodyData)
     {
         var user = _mapper.Map<User>(bodyData);
 
-        try
-        {
-            var result = await _userManager.CreateAsync(user, bodyData.Password);
+        
+        
+          var result = await _userManager.CreateAsync(user, bodyData.Password);
 
-            if (!result.Succeeded)
+
+           if (!result.Succeeded)
             {
                 var errors = string.Join(", ", result.Errors.Select(e => e.Description));
                 throw new Exception($"Falha ao cadastrar usuario: {errors}");
-            }
-        }
-        catch (Exception ex)
-        {
-            // Aqui você pode registrar ou manipular a exceção conforme necessário
-            // Por exemplo, você pode querer logar a exceção para fins de depuração
-            Console.WriteLine($"Erro ao criar usuário: {ex.Message}");
-            throw; // Lançar novamente a exceção para que ela seja tratada em um nível superior
-        }
+           }
+
+       
+
+            return new successCreatDto()
+            {
+                Sucesso = true,
+                Erros = null
+            };
+
+      
+        
+
+
     }
 
     public async Task<UserTokenResponseDto> Login(LoginDto loginDto)

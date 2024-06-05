@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Drawing;
 using System.Linq;
 using System.Security.Claims;
 using System.Text.Json;
@@ -78,9 +79,13 @@ namespace Gerenciador_de_Tarefas.Controllers
         /// <returns>Resposta HTTP contendo as tarefas do usuário.</returns>
         [HttpGet]
         [Route("getTask")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery(Name = "page")] int page = 0,
+                                                [FromQuery(Name = "size")] int size = 10,
+                                                [FromQuery(Name = "TaskSearch")] string taskSearch = "")
         {
             var userID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var offset = page * size;
 
             if (userID == null)
             {
@@ -88,6 +93,13 @@ namespace Gerenciador_de_Tarefas.Controllers
             }
 
             var tasks = await _taskRepository.GetByUserId(userID);
+
+            if (!string.IsNullOrEmpty(taskSearch))
+            {
+                tasks = tasks.Where(t => t.tarefa.Contains(taskSearch, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            tasks = tasks.Skip(offset).Take(size).ToList();
 
             if (tasks == null) return NotFound(new
             {
@@ -112,6 +124,7 @@ namespace Gerenciador_de_Tarefas.Controllers
         {
             var taskDelete = await _taskRepository.Delete(id);
             return taskDelete;
+
         }
 
         /// <summary>

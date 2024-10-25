@@ -22,7 +22,6 @@ public class UserService
     public UserService(IMapper mapper, AppDbContext appDbContext, UserManager<User> userManager, SignInManager<User> signInManager, TokenService tokenService)
     {
         _mapper = mapper;
-      
         _userManager = userManager;
         _signInManager = signInManager;
         _tokenService = tokenService;
@@ -51,21 +50,26 @@ public class UserService
                 Erros = null
             };
 
-      
-        
-
+   
 
     }
 
     public async Task<UserTokenResponseDto> Login(LoginDto loginDto)
     {
-        var signInResult = await _signInManager.PasswordSignInAsync(loginDto.UserName, loginDto.Password, false, false);
+        var user = await _userManager.FindByEmailAsync(loginDto.Email);
+
+        if (user == null)
+        {
+            throw new Exception("Usuário não encontrado.");
+        }
+
+        var signInResult = await _signInManager.PasswordSignInAsync(user.UserName, loginDto.Password, false, false);
 
         if (!signInResult.Succeeded)
         {
             throw new Exception("Falha ao logar usuário");
         }
-        var user = await _userManager.Users.FirstAsync(user => user.NormalizedUserName!.Equals(loginDto.UserName.ToUpper()));
+        
         return new UserTokenResponseDto()
         {
             Token = _tokenService.GenerateToken(user),

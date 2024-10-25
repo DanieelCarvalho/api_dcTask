@@ -22,6 +22,7 @@ namespace Gerenciador_de_Tarefas
             builder.Services.AddControllers(); // Registra e procura controladores na aplicação.
 
             var defaultConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+           
             builder.Services.AddDbContext<AppDbContext>(options =>
             {
                 options.UseLazyLoadingProxies().UseSqlite(defaultConnectionString);

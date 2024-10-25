@@ -64,7 +64,7 @@ namespace Gerenciador_de_Tarefas.Controllers
                     Message = "Successful",
                     CreatedAt = DateTime.UtcNow
                 };
-
+                GetTarefasAtraso();
                 return CreatedAtAction(nameof(CreateTask), responseText);
             }
             catch (Exception ex)
@@ -109,6 +109,7 @@ namespace Gerenciador_de_Tarefas.Controllers
 
             tasks = tasks.Where(t => !t.EstarDeletado).ToList();
             var mappedTasks = _mapper.Map<List<GetTasksDto>>(tasks);
+            GetTarefasAtraso();
 
             return Ok(mappedTasks);
         }
@@ -159,6 +160,7 @@ namespace Gerenciador_de_Tarefas.Controllers
                 Message = "Successful",
                 CreatedAt = DateTime.UtcNow
             };
+            GetTarefasAtraso();
 
             return CreatedAtAction(nameof(UpdateTask), responseText);
         }
